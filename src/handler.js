@@ -1,5 +1,5 @@
 import fs from "fs";
-import { downloadVideo } from "./downloader.js";
+import { downloadVideo } from "./downloader-v2.js";
 
 const YOUTUBE_REGEX =
   /https?:\/\/(www\.)?(youtube\.com\/(shorts\/|watch\?v=)|youtu\.be\/)[\w-]+[^\s]*/;
