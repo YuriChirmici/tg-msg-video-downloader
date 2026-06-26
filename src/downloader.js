@@ -9,7 +9,7 @@ export async function downloadVideo(url, retries = 2) {
     try {
       await ytDlp(url, {
         output: outputPath,
-        format: "mp4[height<=720]/best[ext=mp4]/best",
+        format: "mp4[height<=1080]/best[ext=mp4]/best",
         noPlaylist: true,
       });
       return outputPath;

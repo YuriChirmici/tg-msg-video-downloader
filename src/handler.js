@@ -39,6 +39,7 @@ export async function handleMessage(client, myId, update) {
   if (!match) return;
 
   const url = match[0];
+  const isOnlyUrl = msg.message.trim() === url;
   console.log("Найдена ссылка:", url);
 
   let videoPath;
@@ -53,8 +54,10 @@ export async function handleMessage(client, myId, update) {
     if (isOutgoing) {
       await sendVideo(client, msg.peerId, videoPath, msg.replyTo?.replyToMsgId);
       console.log("Видео отправлено");
-      await client.deleteMessages(msg.peerId, [msg.id], { revoke: true });
-      console.log("Сообщение удалено");
+      if (isOnlyUrl) {
+        await client.deleteMessages(msg.peerId, [msg.id], { revoke: true });
+        console.log("Сообщение удалено");
+      }
     } else {
       await sendVideo(client, msg.peerId, videoPath, msg.id);
       console.log("Видео отправлено в ответ");
