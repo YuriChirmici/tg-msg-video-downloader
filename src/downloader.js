@@ -1,4 +1,4 @@
-import ytDlp from "yt-dlp-exec";
+import ytDlp from "youtube-dl-exec";
 import path from "path";
 import os from "os";
 
