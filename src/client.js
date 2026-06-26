@@ -36,7 +36,7 @@ export async function createClient() {
       env += `\nSESSION=${session}`;
     }
     fs.writeFileSync(envPath, env);
-    console.log("Сессия сохранена в .env");
+    console.log("Сессия сохранена в .env:", session);
   }
 
   console.log("Авторизация успешна. Слушаю исходящие сообщения...");
