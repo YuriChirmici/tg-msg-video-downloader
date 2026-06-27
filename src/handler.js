@@ -1,8 +1,8 @@
 import fs from "fs";
-import { downloadVideo } from "./downloader-v2.js";
+import { downloadVideo, getVideoMeta } from "./downloader-v2.js";
 
 const YOUTUBE_REGEX =
-  /https?:\/\/(www\.)?(youtube\.com\/(shorts\/|watch\?v=)|youtu\.be\/)[\w-]+[^\s]*/;
+  /https?:\/\/(www\.)?youtube\.com\/shorts\/[\w-]+[^\s]*/;
 
 const OUTGOING_CHAT_IDS = new Set(process.env.OUTGOING_CHAT_IDS?.split(",").filter(Boolean) ?? []);
 const INCOMING_CHAT_IDS = new Set(process.env.INCOMING_CHAT_IDS?.split(",").filter(Boolean) ?? []);
@@ -11,11 +11,20 @@ const HANDLE_OUTGOING = process.env.HANDLE_OUTGOING === "true";
 const HANDLE_INCOMING = process.env.HANDLE_INCOMING === "true";
 
 async function sendVideo(client, peerId, videoPath, replyTo) {
+  const { duration, width, height } = await getVideoMeta(videoPath);
   await client.sendFile(peerId, {
     file: videoPath,
     caption: "",
     supportsStreaming: true,
     replyTo,
+    attributes: [
+      new (await import("telegram")).Api.DocumentAttributeVideo({
+        duration,
+        w: width,
+        h: height,
+        supportsStreaming: true,
+      }),
+    ],
   });
 }
 
